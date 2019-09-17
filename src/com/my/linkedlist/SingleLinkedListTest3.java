@@ -1,12 +1,14 @@
 package com.my.linkedlist;
 
+import java.util.Stack;
+
 /**
- * 单链表的反转
+ * 逆序打印单链表的数据 ，没有改变链表本身的结构
  *
  * @author gjq
  * @create 2019-09-17-10:50
  */
-public class SingleLinkedListTest2 {
+public class SingleLinkedListTest3 {
 
     public static void main(String[] args) {
 
@@ -28,38 +30,32 @@ public class SingleLinkedListTest2 {
         //显示数据
         singleLinkedList.list();
 
+        //测试逆序打印单链表，没有改变链表本身的结构
+        System.out.println("逆序打印单链表为：");
+        reversePrint(singleLinkedList.getHead());
 
-        //测试单链表的反转
-        System.out.println("反转后的单链表为：");
-        reverseList(singleLinkedList.getHead());
+        System.out.println("原来的单链表为");
         singleLinkedList.list();
 
-
     }
 
-
-    //单链表的反转
-    public static void reverseList(HeroNode head) {
-        //如果当前链表为空或者只有一个节点，则无需反转
-        if (head.next == null || head.next.next == null) {
-            return;
+    //利用栈这个数据结构，将各个节点压入到栈中，然后利用栈的先进后出的特点，就实现了逆序打印的效果.
+    public static void reversePrint(HeroNode head) {
+        //判断链表是否为空
+        if (head.next == null) {
+            return; //空链表
         }
-        //定义一个辅助变量，帮助遍历原来的链表
-        HeroNode cur = head.next;
-        HeroNode next = null; //指向当前节点cur节点的下一个节点，如果没有，当单链表中节点移动后就不能找到原来的链表的下一个节点，链表就会断掉
-        HeroNode reverseHead = new HeroNode(0, "", "");
-        //遍历原来的单链表，每遍历一个节点，就将其取出，并放在新的单链表reverseHead的最前端
-        while (cur != null) {
-            next = cur.next;  //先暂时保存当前节点的下一个节点,后面需要使用
-            cur.next = reverseHead.next; //将cur的下一个节点指向新的链表的最前端
-            reverseHead.next = cur;  //将cur连接到新的链表上
-            cur = next; //让cur后移，指向下一个节点
-
+        //创建一个栈，将各个节点压入栈中
+        Stack<HeroNode> stack = new Stack<>();
+        HeroNode cur = head.next; //定义辅助变量，
+        //将链表的所有节点压入栈
+        while (cur != null){
+            stack.push(cur);
+            cur = cur.next; //让cur后移，指向下一个节点
         }
-        //将head.next指向reverseHead.next,实现了单链表的反转
-        head.next = reverseHead.next;
-
+        //将栈中的节点进行打印
+        while (stack.size() > 0){
+            System.out.println(stack.pop());
+        }
     }
-
-
 }
